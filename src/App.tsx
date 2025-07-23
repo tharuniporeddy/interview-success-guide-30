@@ -10,6 +10,7 @@ import NotFound from "./pages/NotFound";
 import Quiz from "./pages/Quiz";
 import Tips from "./pages/Tips";
 import Videos from "./pages/Videos";
+import InterviewPrep from "./pages/InterviewPrep";
 
 import QuizTaking from "./pages/QuizTaking";
 
@@ -29,6 +30,7 @@ const App = () => (
             <Route path="/quiz/:categoryId" element={<QuizTaking />} />
             <Route path="/tips" element={<Tips />} />
             <Route path="/videos" element={<Videos />} />
+            <Route path="/interview-prep" element={<InterviewPrep />} />
             
             {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
             <Route path="*" element={<NotFound />} />

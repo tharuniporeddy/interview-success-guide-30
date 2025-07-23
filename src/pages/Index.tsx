@@ -2,7 +2,7 @@ import { useNavigate } from "react-router-dom";
 import { useAuth } from "@/components/AuthProvider";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { BookOpen, Trophy, Video, Users, LogOut } from "lucide-react";
+import { BookOpen, Trophy, Video, Users, LogOut, Target } from "lucide-react";
 import Footer from "@/components/Footer";
 import BottomNavigation from "@/components/BottomNavigation";
 
@@ -59,7 +59,7 @@ const Index = () => {
         </div>
 
         {/* Feature Cards */}
-        <div className="grid md:grid-cols-3 gap-6 mb-12">
+        <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6 mb-12">
           <Card 
             className="cursor-pointer hover:shadow-lg transition-shadow group"
             onClick={() => navigate('/quiz')}
@@ -107,6 +107,23 @@ const Index = () => {
             <CardContent>
               <p className="text-sm text-muted-foreground text-center">
                 Watch comprehensive tutorials on interview techniques
+              </p>
+            </CardContent>
+          </Card>
+
+          <Card 
+            className="cursor-pointer hover:shadow-lg transition-shadow group"
+            onClick={() => navigate('/interview-prep')}
+          >
+            <CardHeader className="text-center">
+              <div className="mx-auto h-12 w-12 rounded-lg bg-green-100 dark:bg-green-900/20 flex items-center justify-center group-hover:bg-green-200 dark:group-hover:bg-green-900/30 transition-colors">
+                <Target className="h-6 w-6 text-green-600 dark:text-green-400" />
+              </div>
+              <CardTitle>Interview Prep Hub</CardTitle>
+            </CardHeader>
+            <CardContent>
+              <p className="text-sm text-muted-foreground text-center">
+                Complete interview preparation with AI tips and videos
               </p>
             </CardContent>
           </Card>

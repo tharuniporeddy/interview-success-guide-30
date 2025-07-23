@@ -1,5 +1,5 @@
 import { Link, useLocation } from "react-router-dom";
-import { Home, BookOpen, Trophy, Video } from "lucide-react";
+import { Home, BookOpen, Trophy, Video, Target } from "lucide-react";
 import { Button } from "@/components/ui/button";
 
 const BottomNavigation = () => {
@@ -7,6 +7,7 @@ const BottomNavigation = () => {
 
   const navItems = [
     { icon: Home, label: "Home", path: "/" },
+    { icon: Target, label: "Prep", path: "/interview-prep" },
     { icon: BookOpen, label: "Quiz", path: "/quiz" },
     { icon: Trophy, label: "Tips", path: "/tips" },
     { icon: Video, label: "Videos", path: "/videos" }
