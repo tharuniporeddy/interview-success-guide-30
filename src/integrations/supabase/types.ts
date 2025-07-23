@@ -156,6 +156,172 @@ export type Database = {
         }
         Relationships: []
       }
+      quiz_answers: {
+        Row: {
+          attempt_id: string
+          created_at: string
+          id: string
+          is_correct: boolean
+          question_id: string
+          user_answer: string
+        }
+        Insert: {
+          attempt_id: string
+          created_at?: string
+          id?: string
+          is_correct: boolean
+          question_id: string
+          user_answer: string
+        }
+        Update: {
+          attempt_id?: string
+          created_at?: string
+          id?: string
+          is_correct?: boolean
+          question_id?: string
+          user_answer?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "fk_quiz_answers_attempt"
+            columns: ["attempt_id"]
+            isOneToOne: false
+            referencedRelation: "quiz_attempts"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "fk_quiz_answers_question"
+            columns: ["question_id"]
+            isOneToOne: false
+            referencedRelation: "quiz_questions"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      quiz_attempts: {
+        Row: {
+          category_id: string
+          created_at: string
+          id: string
+          score: number
+          time_taken: number
+          total_questions: number
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          category_id: string
+          created_at?: string
+          id?: string
+          score: number
+          time_taken: number
+          total_questions: number
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          category_id?: string
+          created_at?: string
+          id?: string
+          score?: number
+          time_taken?: number
+          total_questions?: number
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "fk_quiz_attempts_category"
+            columns: ["category_id"]
+            isOneToOne: false
+            referencedRelation: "quiz_categories"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      quiz_categories: {
+        Row: {
+          company: string | null
+          created_at: string
+          description: string
+          id: string
+          name: string
+          role: string | null
+          type: string
+          updated_at: string
+        }
+        Insert: {
+          company?: string | null
+          created_at?: string
+          description: string
+          id?: string
+          name: string
+          role?: string | null
+          type: string
+          updated_at?: string
+        }
+        Update: {
+          company?: string | null
+          created_at?: string
+          description?: string
+          id?: string
+          name?: string
+          role?: string | null
+          type?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
+      quiz_questions: {
+        Row: {
+          category_id: string
+          correct_answer: string
+          created_at: string
+          difficulty: string
+          id: string
+          option_a: string
+          option_b: string
+          option_c: string
+          option_d: string
+          question: string
+          updated_at: string
+        }
+        Insert: {
+          category_id: string
+          correct_answer: string
+          created_at?: string
+          difficulty?: string
+          id?: string
+          option_a: string
+          option_b: string
+          option_c: string
+          option_d: string
+          question: string
+          updated_at?: string
+        }
+        Update: {
+          category_id?: string
+          correct_answer?: string
+          created_at?: string
+          difficulty?: string
+          id?: string
+          option_a?: string
+          option_b?: string
+          option_c?: string
+          option_d?: string
+          question?: string
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "fk_quiz_questions_category"
+            columns: ["category_id"]
+            isOneToOne: false
+            referencedRelation: "quiz_categories"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       templates: {
         Row: {
           category: string
