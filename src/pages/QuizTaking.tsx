@@ -71,6 +71,7 @@ const QuizTaking = () => {
 
   const fetchQuestions = async () => {
     try {
+      // First try to fetch from database
       const { data, error } = await supabase
         .from('quiz_questions')
         .select('*')
@@ -78,16 +79,65 @@ const QuizTaking = () => {
         .limit(10);
 
       if (error) throw error;
-      setQuestions(data || []);
+      
+      // If no questions found in database, generate them dynamically
+      if (!data || data.length === 0) {
+        console.log('No questions found in database, generating with AI...');
+        await generateQuestionsWithAI();
+      } else {
+        setQuestions(data);
+      }
     } catch (error) {
       console.error('Error fetching questions:', error);
-      toast({
-        title: "Error",
-        description: "Failed to load quiz questions",
-        variant: "destructive",
-      });
+      // Try to generate questions as fallback
+      await generateQuestionsWithAI();
     } finally {
       setLoadingQuestions(false);
+    }
+  };
+
+  const generateQuestionsWithAI = async () => {
+    try {
+      if (!category) {
+        toast({
+          title: "Error", 
+          description: "Category information not available",
+          variant: "destructive",
+        });
+        return;
+      }
+
+      toast({
+        title: "Generating Questions",
+        description: "Creating personalized quiz questions using AI...",
+      });
+
+      const { data, error } = await supabase.functions.invoke('generate-quiz', {
+        body: { 
+          company: category.company || 'General',
+          role: category.role || category.type,
+          categoryId: categoryId
+        }
+      });
+
+      if (error) throw error;
+
+      if (data.questions && data.questions.length > 0) {
+        setQuestions(data.questions);
+        toast({
+          title: "Success",
+          description: `Generated ${data.questions.length} personalized questions!`,
+        });
+      } else {
+        throw new Error('No questions generated');
+      }
+    } catch (error) {
+      console.error('Error generating questions:', error);
+      toast({
+        title: "Error",
+        description: "Failed to generate quiz questions. Please try again later.",
+        variant: "destructive",
+      });
     }
   };
 
@@ -181,15 +231,22 @@ const QuizTaking = () => {
     );
   }
 
-  if (questions.length === 0) {
+  if (questions.length === 0 && !loadingQuestions) {
     return (
       <div className="min-h-screen bg-gradient-to-br from-primary/5 via-background to-secondary/10 flex items-center justify-center">
         <Card className="max-w-md mx-auto">
           <CardContent className="p-8 text-center">
-            <p className="text-muted-foreground mb-4">No questions available for this category yet.</p>
-            <Button onClick={() => navigate('/quiz')}>
-              Back to Categories
-            </Button>
+            <p className="text-muted-foreground mb-4">
+              Unable to load questions. This might be due to missing questions in the database or API limitations.
+            </p>
+            <div className="space-y-2">
+              <Button onClick={() => window.location.reload()} className="w-full">
+                Try Again
+              </Button>
+              <Button onClick={() => navigate('/quiz')} variant="outline" className="w-full">
+                Back to Categories
+              </Button>
+            </div>
           </CardContent>
         </Card>
       </div>

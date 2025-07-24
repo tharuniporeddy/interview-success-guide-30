@@ -15,8 +15,12 @@ serve(async (req) => {
   try {
     const { role, topic } = await req.json();
     
-    // Using the provided Gemini API key
-    const apiKey = 'AIzaSyBxEMpxUsUp5MmfwAAArDo2nHOgWlhoci4';
+    // Get Gemini API key from environment
+    const apiKey = Deno.env.get('GEMINI_API_KEY');
+    
+    if (!apiKey) {
+      throw new Error('GEMINI_API_KEY is not configured');
+    }
     
     const prompt = `Generate 5 practical interview tips for ${role} role interviews${topic ? ` related to ${topic}` : ''}. Format as JSON array with objects containing "tip" field. Keep tips concise and actionable.`;
 
