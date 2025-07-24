@@ -86,18 +86,13 @@ const Tips = () => {
     
     setLoadingAiTips(true);
     try {
-      const response = await fetch('/api/v1/generate-tips', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ role, topic: searchQuery }),
+      const { data, error } = await supabase.functions.invoke('generate-tips', {
+        body: { role, topic: searchQuery }
       });
 
-      if (!response.ok) throw new Error('Failed to generate tips');
+      if (error) throw new Error('Failed to generate tips');
       
-      const data = await response.json();
-      setAiTips(data.tips.map((tip: any) => tip.tip));
+      setAiTips(data?.tips?.map((tip: any) => tip.tip) || []);
     } catch (error) {
       console.error('Error generating AI tips:', error);
       toast.error('Failed to generate AI tips');

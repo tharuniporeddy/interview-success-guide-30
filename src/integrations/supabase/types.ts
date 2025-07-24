@@ -49,6 +49,36 @@ export type Database = {
           },
         ]
       }
+      interview_tips: {
+        Row: {
+          category: string
+          content: string
+          created_at: string
+          id: string
+          tags: string[] | null
+          title: string
+          updated_at: string
+        }
+        Insert: {
+          category: string
+          content: string
+          created_at?: string
+          id?: string
+          tags?: string[] | null
+          title: string
+          updated_at?: string
+        }
+        Update: {
+          category?: string
+          content?: string
+          created_at?: string
+          id?: string
+          tags?: string[] | null
+          title?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
       orders: {
         Row: {
           address: string | null
@@ -425,6 +455,42 @@ export type Database = {
             referencedColumns: ["id"]
           },
         ]
+      }
+      video_tutorials: {
+        Row: {
+          category: string
+          created_at: string
+          description: string
+          duration_minutes: number
+          id: string
+          thumbnail_url: string | null
+          title: string
+          updated_at: string
+          youtube_url: string
+        }
+        Insert: {
+          category: string
+          created_at?: string
+          description: string
+          duration_minutes?: number
+          id?: string
+          thumbnail_url?: string | null
+          title: string
+          updated_at?: string
+          youtube_url: string
+        }
+        Update: {
+          category?: string
+          created_at?: string
+          description?: string
+          duration_minutes?: number
+          id?: string
+          thumbnail_url?: string | null
+          title?: string
+          updated_at?: string
+          youtube_url?: string
+        }
+        Relationships: []
       }
     }
     Views: {
