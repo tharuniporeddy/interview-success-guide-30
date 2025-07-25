@@ -92,7 +92,7 @@ const Tips = () => {
 
       if (error) throw new Error('Failed to generate tips');
       
-      setAiTips(data?.tips?.map((tip: any) => tip.tip) || []);
+      setAiTips(data?.tips || []);
     } catch (error) {
       console.error('Error generating AI tips:', error);
       toast.error('Failed to generate AI tips');
