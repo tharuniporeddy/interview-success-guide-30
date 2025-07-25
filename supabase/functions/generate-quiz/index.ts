@@ -31,16 +31,25 @@ serve(async (req) => {
       Deno.env.get('SUPABASE_ANON_KEY') ?? ''
     );
     
-    const prompt = `Generate 10 multiple choice interview questions for ${company} ${role} position. 
-    Format as JSON array with objects containing:
-    - question: string (the interview question)
-    - option_a: string (first option)
-    - option_b: string (second option) 
-    - option_c: string (third option)
-    - option_d: string (fourth option)
-    - correct_answer: string (A, B, C, or D - the correct option letter)
-    - difficulty: string (easy, medium, or hard)
-    
+    const prompt = `You are a friendly and supportive interview preparation assistant.
+    The user has selected a company: ${company} and a role: ${role}.
+
+    Generate exactly 10 unique and relevant multiple-choice interview questions (MCQs) 
+    for ${role} at ${company}.
+    - Each question should have 4 options (A, B, C, D)
+    - Clearly indicate the correct answer
+    - Questions should cover easy, medium, and difficult levels.
+
+    Return the response in JSON format:
+    {
+      "questions": [
+        {"question": "Your question", 
+         "options": ["Option A","Option B","Option C","Option D"], 
+         "answer": "Correct Option Letter"
+        }
+      ]
+    }
+
     Make questions relevant to ${company} company culture, values, and ${role} specific skills.
     Include a mix of technical, behavioral, and company-specific questions.
     Ensure only one answer is clearly correct for each question.`;
@@ -72,13 +81,28 @@ serve(async (req) => {
     let questions = [];
     try {
       // Extract JSON from markdown code blocks if present
-      const jsonMatch = generatedText.match(/```json\n?(.*?)\n?```/s) || generatedText.match(/\[(.*?)\]/s);
+      const jsonMatch = generatedText.match(/```json\n?(.*?)\n?```/s);
+      let jsonStr = '';
+      
       if (jsonMatch) {
-        questions = JSON.parse(jsonMatch[1] ? `[${jsonMatch[1]}]` : jsonMatch[0]);
+        jsonStr = jsonMatch[1];
       } else {
-        // Try parsing the entire response as JSON
-        questions = JSON.parse(generatedText);
+        jsonStr = generatedText;
       }
+      
+      const parsed = JSON.parse(jsonStr);
+      questions = parsed.questions || [];
+      
+      // Transform to the expected format
+      questions = questions.map(q => ({
+        question: q.question,
+        option_a: q.options[0],
+        option_b: q.options[1], 
+        option_c: q.options[2],
+        option_d: q.options[3],
+        correct_answer: q.answer,
+        difficulty: 'medium'
+      }));
     } catch (parseError) {
       console.error('JSON parsing failed:', parseError);
       

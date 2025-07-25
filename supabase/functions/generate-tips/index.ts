@@ -13,62 +13,43 @@ serve(async (req) => {
   }
 
   try {
-    const { role, topic } = await req.json();
+    const { role } = await req.json();
     
-    // Get Gemini API key from environment
-    const apiKey = Deno.env.get('GEMINI_API_KEY');
+    // Use predefined tips based on role type
+    const behavioralTips = [
+      "Be honest and confident", 
+      "Use STAR method for answers", 
+      "Maintain positive body language", 
+      "Research company culture", 
+      "Show enthusiasm for the role"
+    ];
     
-    if (!apiKey) {
-      throw new Error('GEMINI_API_KEY is not configured');
+    const technicalTips = [
+      "Brush up on core technical subjects", 
+      "Prepare for coding or problem-solving tasks", 
+      "Explain your reasoning clearly", 
+      "Show projects or hands-on experience", 
+      "Be clear about tools & technologies used"
+    ];
+    
+    const generalTips = [
+      "Know about the company background", 
+      "Prepare for common HR questions", 
+      "Be on time for the interview", 
+      "Dress professionally", 
+      "Keep your resume updated and handy"
+    ];
+    
+    // Determine which tips to use based on role
+    let selectedTips = generalTips;
+    if (role.toLowerCase().includes('hr') || role.toLowerCase().includes('human resources')) {
+      selectedTips = behavioralTips;
+    } else if (role.toLowerCase().includes('technical') || role.toLowerCase().includes('developer') || 
+               role.toLowerCase().includes('engineer') || role.toLowerCase().includes('programmer')) {
+      selectedTips = technicalTips;
     }
     
-    const prompt = `Generate 5 practical interview tips for ${role} role interviews${topic ? ` related to ${topic}` : ''}. Format as JSON array with objects containing "tip" field. Keep tips concise and actionable.`;
-
-    const response = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-pro:generateContent?key=${apiKey}`, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({
-        contents: [{
-          parts: [{
-            text: prompt
-          }]
-        }]
-      }),
-    });
-
-    if (!response.ok) {
-      throw new Error(`Gemini API error: ${response.status}`);
-    }
-
-    const data = await response.json();
-    const generatedText = data.candidates?.[0]?.content?.parts?.[0]?.text || '';
-    
-    // Try to parse JSON from the response
-    let tips = [];
-    try {
-      // Extract JSON from markdown code blocks if present
-      const jsonMatch = generatedText.match(/```json\n?(.*?)\n?```/s) || generatedText.match(/\[(.*?)\]/s);
-      if (jsonMatch) {
-        tips = JSON.parse(jsonMatch[1] ? `[${jsonMatch[1]}]` : jsonMatch[0]);
-      } else {
-        // Fallback: create tips from plain text
-        const lines = generatedText.split('\n').filter(line => line.trim() && !line.includes('```'));
-        tips = lines.slice(0, 5).map(line => ({ tip: line.replace(/^\d+\.\s*/, '').trim() }));
-      }
-    } catch {
-      // Fallback tips if parsing fails
-      tips = [
-        { tip: `Research the company thoroughly before your ${role.toLowerCase()} interview.` },
-        { tip: `Prepare specific examples that demonstrate your ${role.toLowerCase()} skills.` },
-        { tip: "Practice common interview questions out loud." },
-        { tip: "Prepare thoughtful questions to ask the interviewer." },
-        { tip: "Follow up with a thank-you email within 24 hours." }
-      ];
-    }
-
-    return new Response(JSON.stringify({ tips }), {
+    return new Response(JSON.stringify({ tips: selectedTips }), {
       headers: { ...corsHeaders, 'Content-Type': 'application/json' },
     });
   } catch (error) {
