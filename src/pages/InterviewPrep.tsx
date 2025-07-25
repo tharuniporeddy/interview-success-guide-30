@@ -49,7 +49,7 @@ const InterviewPrep = () => {
       if (error) throw error;
       
       if (data?.tips && Array.isArray(data.tips)) {
-        setAiTips(data.tips);
+        setAiTips(data.tips.map(tip => ({ tip })));
       } else {
         throw new Error('Invalid response format');
       }

@@ -98,13 +98,28 @@ const QuizTaking = () => {
 
   const generateQuestionsWithAI = async () => {
     try {
-      if (!category) {
-        toast({
-          title: "Error", 
-          description: "Category information not available",
-          variant: "destructive",
-        });
-        return;
+      let currentCategory = category;
+      
+      // Get category info first if not available
+      if (!currentCategory) {
+        const { data: categoryData, error: categoryError } = await supabase
+          .from('quiz_categories')
+          .select('*')
+          .eq('id', categoryId)
+          .single();
+        
+        if (categoryError) throw categoryError;
+        setCategory(categoryData);
+        currentCategory = categoryData;
+        
+        if (!categoryData) {
+          toast({
+            title: "Error", 
+            description: "Category information not available",
+            variant: "destructive",
+          });
+          return;
+        }
       }
 
       toast({
@@ -114,8 +129,8 @@ const QuizTaking = () => {
 
       const { data, error } = await supabase.functions.invoke('generate-quiz', {
         body: { 
-          company: category.company || 'General',
-          role: category.role || category.type,
+          company: currentCategory?.company || 'General',
+          role: currentCategory?.role || currentCategory?.type || 'General',
           categoryId: categoryId
         }
       });

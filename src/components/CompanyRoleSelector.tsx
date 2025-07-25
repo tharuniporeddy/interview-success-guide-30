@@ -116,7 +116,7 @@ const CompanyRoleSelector = ({ onStartQuiz, loading }: CompanyRoleSelectorProps)
           ) : (
             <>
               <Play className="h-5 w-5 mr-2" />
-              👇 Start Quiz
+              👇 Start Preparation
             </>
           )}
         </Button>
