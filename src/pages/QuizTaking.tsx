@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { useParams, useNavigate } from "react-router-dom";
+import { useParams, useNavigate, useLocation } from "react-router-dom";
 import { useAuth } from "@/components/AuthProvider";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
@@ -30,7 +30,11 @@ const QuizTaking = () => {
   const { categoryId } = useParams();
   const { user, loading } = useAuth();
   const navigate = useNavigate();
+  const location = useLocation();
   const { toast } = useToast();
+  
+  // Get passed state from navigation
+  const routeState = location.state as { company?: string; role?: string; categoryName?: string } | null;
 
   const [questions, setQuestions] = useState<QuizQuestion[]>([]);
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
@@ -98,59 +102,65 @@ const QuizTaking = () => {
 
   const generateQuestionsWithAI = async () => {
     try {
+      // Import the utility function
+      const { generateQuizQuestions } = await import('@/utils/quizGeneration');
+      
       let currentCategory = category;
+      let company = 'General';
+      let role = 'General';
       
       // Get category info first if not available
       if (!currentCategory) {
-        const { data: categoryData, error: categoryError } = await supabase
-          .from('quiz_categories')
-          .select('*')
-          .eq('id', categoryId)
-          .single();
-        
-        if (categoryError) throw categoryError;
-        setCategory(categoryData);
-        currentCategory = categoryData;
-        
-        if (!categoryData) {
-          toast({
-            title: "Error", 
-            description: "Category information not available",
-            variant: "destructive",
-          });
-          return;
+        try {
+          const { data: categoryData, error: categoryError } = await supabase
+            .from('quiz_categories')
+            .select('*')
+            .eq('id', categoryId)
+            .single();
+          
+          if (!categoryError && categoryData) {
+            setCategory(categoryData);
+            currentCategory = categoryData;
+          }
+        } catch (e) {
+          console.log('No category in database, using route state or category ID');
+        }
+      }
+
+      // Extract company and role from category or categoryId
+      if (currentCategory) {
+        company = currentCategory.company || 'General';
+        role = currentCategory.role || currentCategory.type || 'General';
+      } else if (categoryId) {
+        // Parse from categoryId format: "CompanyName-role"
+        const parts = categoryId.split('-');
+        if (parts.length >= 2) {
+          company = parts[0];
+          role = parts[1];
         }
       }
 
       toast({
         title: "Generating Questions",
-        description: "Creating personalized quiz questions using AI...",
+        description: `Creating personalized ${role} questions for ${company}...`,
       });
 
-      const { data, error } = await supabase.functions.invoke('generate-quiz', {
-        body: { 
-          company: currentCategory?.company || 'General',
-          role: currentCategory?.role || currentCategory?.type || 'General',
-          categoryId: categoryId
-        }
-      });
-
-      if (error) throw error;
-
-      if (data.questions && data.questions.length > 0) {
-        setQuestions(data.questions);
+      const generatedQuestions = await generateQuizQuestions(company, role, categoryId);
+      
+      if (generatedQuestions && generatedQuestions.length >= 10) {
+        setQuestions(generatedQuestions);
         toast({
           title: "Success",
-          description: `Generated ${data.questions.length} personalized questions!`,
+          description: `Generated ${generatedQuestions.length} personalized questions for ${company} ${role} role!`,
         });
       } else {
-        throw new Error('No questions generated');
+        throw new Error('Insufficient questions generated');
       }
     } catch (error) {
       console.error('Error generating questions:', error);
       toast({
         title: "Error",
-        description: "Failed to generate quiz questions. Please try again later.",
+        description: "Failed to generate quiz questions. Please try a different company or role.",
         variant: "destructive",
       });
     }
@@ -329,12 +339,14 @@ const QuizTaking = () => {
                 <ArrowLeft className="h-4 w-4" />
                 Exit Quiz
               </Button>
-              <div>
-                <h1 className="text-xl font-bold">{category?.name} Quiz</h1>
-                <p className="text-sm text-muted-foreground">
-                  Question {currentQuestionIndex + 1} of {questions.length}
-                </p>
-              </div>
+            <div>
+              <h1 className="text-xl font-bold">
+                {routeState?.categoryName || category?.name || `${routeState?.company || 'General'} ${routeState?.role || 'Quiz'}`}
+              </h1>
+              <p className="text-sm text-muted-foreground">
+                Question {currentQuestionIndex + 1} of {questions.length}
+              </p>
+            </div>
             </div>
             <div className="flex items-center gap-4">
               <Badge variant="secondary" className="gap-1">
