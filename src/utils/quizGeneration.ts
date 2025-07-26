@@ -11,6 +11,160 @@ export interface QuizQuestion {
   difficulty: string;
 }
 
+// HR Questions - General behavioral and situational questions (15 questions)
+const hrQuestions: QuizQuestion[] = [
+  {
+    id: "hr-1",
+    question: "Tell me about a time when you had to work with a difficult team member. How did you handle the situation?",
+    option_a: "I avoided working with them whenever possible",
+    option_b: "I communicated directly about the issues and found common ground",
+    option_c: "I complained to my manager immediately",
+    option_d: "I did all the work myself to avoid conflict",
+    correct_answer: "B",
+    difficulty: "medium"
+  },
+  {
+    id: "hr-2", 
+    question: "How do you prioritize your tasks when you have multiple deadlines?",
+    option_a: "I work on tasks in the order they were assigned",
+    option_b: "I assess urgency and importance, then create a strategic plan",
+    option_c: "I always work on the easiest tasks first",
+    option_d: "I ask my manager to prioritize everything for me",
+    correct_answer: "B",
+    difficulty: "easy"
+  },
+  {
+    id: "hr-3",
+    question: "Describe a situation where you had to learn a new skill quickly.",
+    option_a: "I waited for formal training to be provided",
+    option_b: "I researched, practiced, and sought mentorship to learn efficiently",
+    option_c: "I pretended to know the skill until I figured it out",
+    option_d: "I delegated the task to someone else",
+    correct_answer: "B", 
+    difficulty: "medium"
+  },
+  {
+    id: "hr-4",
+    question: "How do you handle criticism from your supervisor?",
+    option_a: "I take it personally and get defensive",
+    option_b: "I listen actively, ask clarifying questions, and use it for improvement",
+    option_c: "I ignore it and continue with my approach",
+    option_d: "I immediately agree without understanding the feedback",
+    correct_answer: "B",
+    difficulty: "easy"
+  },
+  {
+    id: "hr-5",
+    question: "What motivates you to perform well at work?",
+    option_a: "Only money and benefits",
+    option_b: "Professional growth, meaningful work, and team collaboration",
+    option_c: "Fear of getting fired",
+    option_d: "Competition with colleagues",
+    correct_answer: "B",
+    difficulty: "easy"
+  },
+  {
+    id: "hr-6",
+    question: "Tell me about a time you failed at something. How did you handle it?",
+    option_a: "I blamed external circumstances and moved on",
+    option_b: "I analyzed what went wrong, learned from it, and applied lessons to future work",
+    option_c: "I avoided taking risks after that",
+    option_d: "I never failed at anything",
+    correct_answer: "B",
+    difficulty: "medium"
+  },
+  {
+    id: "hr-7",
+    question: "How do you handle stress and pressure in the workplace?",
+    option_a: "I get overwhelmed and shut down",
+    option_b: "I break tasks into manageable parts and use stress management techniques",
+    option_c: "I work longer hours until I burn out",
+    option_d: "I avoid stressful situations completely",
+    correct_answer: "B",
+    difficulty: "medium"
+  },
+  {
+    id: "hr-8",
+    question: "Describe your ideal work environment.",
+    option_a: "One where I work alone without any interaction",
+    option_b: "Collaborative, supportive, with opportunities for growth and open communication",
+    option_c: "Highly competitive with individual recognition only",
+    option_d: "One with minimal responsibilities and expectations",
+    correct_answer: "B",
+    difficulty: "easy"
+  },
+  {
+    id: "hr-9",
+    question: "How do you approach working with people from different backgrounds?",
+    option_a: "I stick to working with people similar to me",
+    option_b: "I embrace diversity, learn from different perspectives, and adapt my communication style",
+    option_c: "I ignore cultural differences completely",
+    option_d: "I assume everyone should adapt to my way of working",
+    correct_answer: "B",
+    difficulty: "medium"
+  },
+  {
+    id: "hr-10",
+    question: "Tell me about a time you had to meet a challenging deadline.",
+    option_a: "I missed the deadline and blamed others",
+    option_b: "I organized my time, sought help when needed, and delivered quality work on time",
+    option_c: "I submitted incomplete work to meet the deadline",
+    option_d: "I asked for an extension without trying to meet the original deadline",
+    correct_answer: "B",
+    difficulty: "medium"
+  },
+  {
+    id: "hr-11",
+    question: "How do you handle conflicts in the workplace?",
+    option_a: "I avoid all conflicts and hope they resolve themselves",
+    option_b: "I address conflicts professionally, listen to all sides, and work toward solutions",
+    option_c: "I always escalate conflicts to management immediately",
+    option_d: "I take sides based on personal relationships",
+    correct_answer: "B",
+    difficulty: "medium"
+  },
+  {
+    id: "hr-12",
+    question: "What are your long-term career goals?",
+    option_a: "I haven't thought about it",
+    option_b: "I want to grow professionally, develop leadership skills, and contribute meaningfully to the organization",
+    option_c: "I just want to do the minimum required work",
+    option_d: "I want to quickly move to a management position regardless of my experience",
+    correct_answer: "B",
+    difficulty: "easy"
+  },
+  {
+    id: "hr-13",
+    question: "How do you stay updated with industry trends and developments?",
+    option_a: "I don't bother staying updated",
+    option_b: "I read industry publications, attend conferences, and network with professionals",
+    option_c: "I only learn what's required for my current job",
+    option_d: "I rely on my colleagues to inform me about changes",
+    correct_answer: "B",
+    difficulty: "medium"
+  },
+  {
+    id: "hr-14",
+    question: "Describe a time when you had to work under minimal supervision.",
+    option_a: "I struggled because I need constant guidance",
+    option_b: "I took initiative, set clear goals, and maintained regular communication with stakeholders",
+    option_c: "I did whatever I thought was right without consulting anyone",
+    option_d: "I avoided making any decisions on my own",
+    correct_answer: "B",
+    difficulty: "medium"
+  },
+  {
+    id: "hr-15",
+    question: "How do you contribute to a positive team environment?",
+    option_a: "I focus only on my individual tasks",
+    option_b: "I support colleagues, share knowledge, communicate openly, and celebrate team successes",
+    option_c: "I compete with teammates to stand out",
+    option_d: "I avoid participating in team activities",
+    correct_answer: "B",
+    difficulty: "easy"
+  }
+];
+
 // Fallback question bank organized by company and role
 const fallbackQuestions: Record<string, Record<string, QuizQuestion[]>> = {
   "Google": {

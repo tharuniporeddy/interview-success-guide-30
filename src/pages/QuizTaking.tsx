@@ -6,7 +6,7 @@ import { Button } from "@/components/ui/button";
 import { Progress } from "@/components/ui/progress";
 import { Badge } from "@/components/ui/badge";
 import { supabase } from "@/integrations/supabase/client";
-import { ArrowLeft, Clock, CheckCircle, XCircle } from "lucide-react";
+import { ArrowLeft, Clock, CheckCircle, XCircle, BookOpen, Sparkles } from "lucide-react";
 import { useToast } from "@/components/ui/use-toast";
 
 interface QuizQuestion {
@@ -105,53 +105,32 @@ const QuizTaking = () => {
       // Import the utility function
       const { generateQuizQuestions } = await import('@/utils/quizGeneration');
       
-      let currentCategory = category;
-      let company = 'General';
-      let role = 'General';
+      let role = 'general';
       
-      // Get category info first if not available
-      if (!currentCategory) {
-        try {
-          const { data: categoryData, error: categoryError } = await supabase
-            .from('quiz_categories')
-            .select('*')
-            .eq('id', categoryId)
-            .single();
-          
-          if (!categoryError && categoryData) {
-            setCategory(categoryData);
-            currentCategory = categoryData;
-          }
-        } catch (e) {
-          console.log('No category in database, using route state or category ID');
-        }
-      }
-
-      // Extract company and role from category or categoryId
-      if (currentCategory) {
-        company = currentCategory.company || 'General';
-        role = currentCategory.role || currentCategory.type || 'General';
+      // Extract role from route state or categoryId
+      if (routeState?.role) {
+        role = routeState.role;
       } else if (categoryId) {
-        // Parse from categoryId format: "CompanyName-role"
-        const parts = categoryId.split('-');
-        if (parts.length >= 2) {
-          company = parts[0];
-          role = parts[1];
+        // Parse from categoryId format: "role-round"
+        if (categoryId.includes('technical')) {
+          role = 'technical';
+        } else if (categoryId.includes('hr')) {
+          role = 'hr';
         }
       }
 
       toast({
         title: "Generating Questions",
-        description: `Creating personalized ${role} questions for ${company}...`,
+        description: `Creating ${role} round questions...`,
       });
 
-      const generatedQuestions = await generateQuizQuestions(company, role, categoryId);
+      const generatedQuestions = await generateQuizQuestions('General', role, categoryId);
       
       if (generatedQuestions && generatedQuestions.length >= 10) {
         setQuestions(generatedQuestions);
         toast({
           title: "Success",
-          description: `Generated ${generatedQuestions.length} personalized questions for ${company} ${role} role!`,
+          description: `Generated ${generatedQuestions.length} questions for ${role} round!`,
         });
       } else {
         throw new Error('Insufficient questions generated');
@@ -160,7 +139,7 @@ const QuizTaking = () => {
       console.error('Error generating questions:', error);
       toast({
         title: "Error",
-        description: "Failed to generate quiz questions. Please try a different company or role.",
+        description: "Failed to generate quiz questions. Please try again.",
         variant: "destructive",
       });
     }
@@ -279,48 +258,182 @@ const QuizTaking = () => {
   }
 
   if (quizCompleted) {
-    return (
-      <div className="min-h-screen bg-gradient-to-br from-primary/5 via-background to-secondary/10 flex items-center justify-center">
-        <Card className="max-w-2xl mx-auto">
-          <CardHeader className="text-center">
-            <div className="mx-auto h-16 w-16 rounded-full bg-primary/10 flex items-center justify-center mb-4">
-              {score >= 70 ? (
-                <CheckCircle className="h-8 w-8 text-green-600" />
-              ) : (
-                <XCircle className="h-8 w-8 text-orange-600" />
-              )}
-            </div>
-            <CardTitle className="text-2xl">Quiz Completed!</CardTitle>
-          </CardHeader>
-          <CardContent className="text-center space-y-6">
-            <div>
-              <div className="text-4xl font-bold text-primary mb-2">{score}%</div>
-              <p className="text-muted-foreground">
-                You answered {userAnswers.filter(a => a.isCorrect).length} out of {questions.length} questions correctly
-              </p>
-            </div>
-            
-            <div className="grid grid-cols-2 gap-4 max-w-md mx-auto">
-              <div className="text-center">
-                <div className="text-2xl font-semibold">{userAnswers.filter(a => a.isCorrect).length}</div>
-                <p className="text-sm text-muted-foreground">Correct</p>
-              </div>
-              <div className="text-center">
-                <div className="text-2xl font-semibold">{userAnswers.filter(a => !a.isCorrect).length}</div>
-                <p className="text-sm text-muted-foreground">Incorrect</p>
-              </div>
-            </div>
+    const correctAnswers = userAnswers.filter(a => a.isCorrect);
+    const incorrectAnswers = userAnswers.filter(a => !a.isCorrect);
+    
+    // Generate improvement suggestions based on wrong answers
+    const getImprovementSuggestions = () => {
+      const role = routeState?.role || 'general';
+      const wrongCount = incorrectAnswers.length;
+      
+      if (role === 'technical') {
+        const suggestions = [];
+        if (wrongCount > 0) {
+          suggestions.push("💻 Review programming fundamentals and practice coding problems");
+          suggestions.push("📊 Strengthen your understanding of data structures and algorithms");
+          suggestions.push("🗄️ Study database concepts and SQL queries");
+          suggestions.push("🔧 Brush up on object-oriented programming principles");
+        }
+        if (score < 60) {
+          suggestions.push("📚 Consider taking online courses on computer science topics");
+          suggestions.push("🛠️ Practice more hands-on coding exercises");
+        }
+        return suggestions.slice(0, 3);
+      } else if (role === 'hr') {
+        const suggestions = [];
+        if (wrongCount > 0) {
+          suggestions.push("💭 Practice articulating your experiences using the STAR method");
+          suggestions.push("🤝 Work on communication and interpersonal skills");
+          suggestions.push("🎯 Research common behavioral interview questions");
+          suggestions.push("🏆 Prepare specific examples of leadership and teamwork");
+        }
+        if (score < 60) {
+          suggestions.push("📖 Read about effective workplace communication");
+          suggestions.push("🎪 Practice mock interviews with friends or mentors");
+        }
+        return suggestions.slice(0, 3);
+      }
+      return ["📈 Continue practicing to improve your interview skills"];
+    };
 
-            <div className="flex gap-4 justify-center">
-              <Button onClick={() => navigate('/quiz')} variant="outline">
-                Back to Categories
-              </Button>
-              <Button onClick={() => navigate('/')}>
-                Home
-              </Button>
-            </div>
-          </CardContent>
-        </Card>
+    return (
+      <div className="min-h-screen bg-gradient-to-br from-primary/5 via-background to-secondary/10 p-4">
+        <div className="max-w-4xl mx-auto">
+          <Card className="mb-8">
+            <CardHeader className="text-center">
+              <div className="mx-auto h-16 w-16 rounded-full bg-primary/10 flex items-center justify-center mb-4">
+                {score >= 70 ? (
+                  <CheckCircle className="h-8 w-8 text-green-600" />
+                ) : (
+                  <XCircle className="h-8 w-8 text-orange-600" />
+                )}
+              </div>
+              <CardTitle className="text-3xl">Quiz Completed!</CardTitle>
+              <p className="text-muted-foreground">
+                {routeState?.categoryName || 'Quiz'} Results
+              </p>
+            </CardHeader>
+            <CardContent className="space-y-6">
+              <div className="text-center">
+                <div className="text-5xl font-bold text-primary mb-2">{score}%</div>
+                <p className="text-lg text-muted-foreground">
+                  You answered {correctAnswers.length} out of {questions.length} questions correctly
+                </p>
+              </div>
+              
+              <div className="grid grid-cols-3 gap-4 max-w-md mx-auto">
+                <div className="text-center">
+                  <div className="text-2xl font-semibold text-green-600">{correctAnswers.length}</div>
+                  <p className="text-sm text-muted-foreground">Correct</p>
+                </div>
+                <div className="text-center">
+                  <div className="text-2xl font-semibold text-red-600">{incorrectAnswers.length}</div>
+                  <p className="text-sm text-muted-foreground">Incorrect</p>
+                </div>
+                <div className="text-center">
+                  <div className="text-2xl font-semibold text-blue-600">{score >= 70 ? 'Pass' : 'Review'}</div>
+                  <p className="text-sm text-muted-foreground">Status</p>
+                </div>
+              </div>
+            </CardContent>
+          </Card>
+
+          {/* Detailed Results */}
+          <div className="grid md:grid-cols-2 gap-6 mb-8">
+            {/* Question Summary */}
+            <Card>
+              <CardHeader>
+                <CardTitle className="flex items-center gap-2">
+                  <BookOpen className="h-5 w-5" />
+                  Question Summary
+                </CardTitle>
+              </CardHeader>
+              <CardContent className="space-y-3 max-h-96 overflow-y-auto">
+                {userAnswers.map((answer, index) => {
+                  const question = questions.find(q => q.id === answer.questionId);
+                  if (!question) return null;
+                  
+                  return (
+                    <div key={answer.questionId} className={`p-3 rounded-lg border ${
+                      answer.isCorrect ? 'bg-green-50 border-green-200' : 'bg-red-50 border-red-200'
+                    }`}>
+                      <div className="flex items-start gap-3">
+                        <div className={`flex-shrink-0 w-6 h-6 rounded-full flex items-center justify-center text-xs font-medium ${
+                          answer.isCorrect ? 'bg-green-100 text-green-700' : 'bg-red-100 text-red-700'
+                        }`}>
+                          {index + 1}
+                        </div>
+                        <div className="flex-1">
+                          <p className="text-sm font-medium line-clamp-2">{question.question}</p>
+                          <div className="flex items-center gap-4 mt-1 text-xs">
+                            <span>Your answer: <strong>{answer.userAnswer}</strong></span>
+                            {!answer.isCorrect && (
+                              <span className="text-green-600">Correct: <strong>{question.correct_answer}</strong></span>
+                            )}
+                          </div>
+                        </div>
+                        {answer.isCorrect ? (
+                          <CheckCircle className="h-4 w-4 text-green-600 flex-shrink-0" />
+                        ) : (
+                          <XCircle className="h-4 w-4 text-red-600 flex-shrink-0" />
+                        )}
+                      </div>
+                    </div>
+                  );
+                })}
+              </CardContent>
+            </Card>
+
+            {/* Improvement Suggestions */}
+            <Card>
+              <CardHeader>
+                <CardTitle className="flex items-center gap-2">
+                  <Sparkles className="h-5 w-5" />
+                  Improvement Suggestions
+                </CardTitle>
+              </CardHeader>
+              <CardContent className="space-y-4">
+                {score >= 90 ? (
+                  <div className="text-center py-8">
+                    <div className="text-4xl mb-4">🎉</div>
+                    <h3 className="text-lg font-semibold text-green-600 mb-2">Excellent Performance!</h3>
+                    <p className="text-muted-foreground">You're well-prepared for this type of interview. Keep up the great work!</p>
+                  </div>
+                ) : (
+                  <div className="space-y-3">
+                    <p className="text-muted-foreground mb-4">
+                      Based on your performance, here are some areas to focus on:
+                    </p>
+                    {getImprovementSuggestions().map((suggestion, index) => (
+                      <div key={index} className="flex items-start gap-3 p-3 bg-blue-50 rounded-lg">
+                        <div className="flex-shrink-0 w-6 h-6 rounded-full bg-blue-100 flex items-center justify-center text-xs font-medium text-blue-700">
+                          {index + 1}
+                        </div>
+                        <p className="text-sm text-blue-800">{suggestion}</p>
+                      </div>
+                    ))}
+                  </div>
+                )}
+                
+                <div className="pt-4 border-t">
+                  <p className="text-sm text-muted-foreground">
+                    💡 <strong>Tip:</strong> Regular practice and reviewing your mistakes will help you improve significantly.
+                  </p>
+                </div>
+              </CardContent>
+            </Card>
+          </div>
+
+          {/* Action Buttons */}
+          <div className="flex gap-4 justify-center">
+            <Button onClick={() => navigate('/quiz')} variant="outline" size="lg">
+              Take Another Quiz
+            </Button>
+            <Button onClick={() => navigate('/')} size="lg">
+              Back to Home
+            </Button>
+          </div>
+        </div>
       </div>
     );
   }
