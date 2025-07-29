@@ -39,59 +39,149 @@ const Videos = () => {
     technical: [
       {
         id: 'tech-1',
-        title: 'Technical Interview Preparation - Data Structures',
-        description: 'Master the fundamentals of data structures for technical interviews',
-        youtube_url: 'https://youtube.com/watch?v=dQw4w9WgXcQ',
-        thumbnail_url: 'https://img.youtube.com/vi/dQw4w9WgXcQ/maxresdefault.jpg',
+        title: 'Python Interview Questions & Answers for Developers',
+        description: 'Top Python interview questions and coding challenges. Essential for Python developer interviews covering data structures, algorithms, and Python concepts.',
+        youtube_url: 'https://youtube.com/watch?v=rfscVS0vtbw',
+        thumbnail_url: 'https://img.youtube.com/vi/rfscVS0vtbw/maxresdefault.jpg',
+        category: 'technical',
+        duration_minutes: 35
+      },
+      {
+        id: 'tech-2',
+        title: 'Java Interview Questions & Answers',
+        description: 'Common Java interview questions and detailed answers. Perfect for Java developer interviews covering OOP, collections, and Java fundamentals.',
+        youtube_url: 'https://youtube.com/watch?v=U3Zvz_p5cV0',
+        thumbnail_url: 'https://img.youtube.com/vi/U3Zvz_p5cV0/maxresdefault.jpg',
+        category: 'technical',
+        duration_minutes: 28
+      },
+      {
+        id: 'tech-3',
+        title: 'Data Structures & Algorithms Interview Questions',
+        description: 'Master the fundamentals of data structures and algorithms for technical interviews. Learn about arrays, linked lists, trees, graphs, and common algorithms.',
+        youtube_url: 'https://youtube.com/watch?v=8hly31xKli0',
+        thumbnail_url: 'https://img.youtube.com/vi/8hly31xKli0/maxresdefault.jpg',
         category: 'technical',
         duration_minutes: 45
       },
       {
-        id: 'tech-2',
-        title: 'Coding Interview Tips & Tricks',
-        description: 'Essential coding techniques and problem-solving strategies',
-        youtube_url: 'https://youtube.com/watch?v=dQw4w9WgXcQ',
-        thumbnail_url: 'https://img.youtube.com/vi/dQw4w9WgXcQ/maxresdefault.jpg',
+        id: 'tech-4',
+        title: 'HTML & CSS Interview Questions',
+        description: 'Essential HTML and CSS interview questions for frontend developers. Learn about semantic HTML, CSS layouts, responsive design, and modern CSS features.',
+        youtube_url: 'https://youtube.com/watch?v=W6NZfCO5SIk',
+        thumbnail_url: 'https://img.youtube.com/vi/W6NZfCO5SIk/maxresdefault.jpg',
+        category: 'technical',
+        duration_minutes: 25
+      },
+      {
+        id: 'tech-5',
+        title: 'JavaScript Interview Questions & Answers',
+        description: 'Common JavaScript interview questions and detailed answers. Perfect for frontend and full-stack developer interviews covering ES6, closures, promises, and more.',
+        youtube_url: 'https://youtube.com/watch?v=W6NZfCO5SIk',
+        thumbnail_url: 'https://img.youtube.com/vi/W6NZfCO5SIk/maxresdefault.jpg',
         category: 'technical',
         duration_minutes: 30
       },
       {
-        id: 'tech-3',
-        title: 'System Design Interview Guide',
-        description: 'Complete guide to system design interviews',
-        youtube_url: 'https://youtube.com/watch?v=dQw4w9WgXcQ',
-        thumbnail_url: 'https://img.youtube.com/vi/dQw4w9WgXcQ/maxresdefault.jpg',
+        id: 'tech-6',
+        title: 'System Design Interview Guide - Complete Tutorial',
+        description: 'Complete guide to system design interviews. Learn how to design scalable systems and answer system design questions effectively.',
+        youtube_url: 'https://youtube.com/watch?v=quLkqoM9JYA',
+        thumbnail_url: 'https://img.youtube.com/vi/quLkqoM9JYA/maxresdefault.jpg',
         category: 'technical',
         duration_minutes: 60
+      },
+      {
+        id: 'tech-7',
+        title: 'React.js Interview Questions & Answers',
+        description: 'Top React.js interview questions for frontend developers. Covering React hooks, components, state management, and best practices.',
+        youtube_url: 'https://youtube.com/watch?v=W6NZfCO5SIk',
+        thumbnail_url: 'https://img.youtube.com/vi/W6NZfCO5SIk/maxresdefault.jpg',
+        category: 'technical',
+        duration_minutes: 32
+      },
+      {
+        id: 'tech-8',
+        title: 'Database & SQL Interview Questions',
+        description: 'Essential database and SQL interview questions. Learn about database design, SQL queries, indexing, and database optimization.',
+        youtube_url: 'https://youtube.com/watch?v=W6NZfCO5SIk',
+        thumbnail_url: 'https://img.youtube.com/vi/W6NZfCO5SIk/maxresdefault.jpg',
+        category: 'technical',
+        duration_minutes: 40
       }
     ],
     hr: [
       {
         id: 'hr-1',
-        title: 'HR Interview Questions & Answers',
-        description: 'Most common HR interview questions and how to answer them',
-        youtube_url: 'https://youtube.com/watch?v=dQw4w9WgXcQ',
-        thumbnail_url: 'https://img.youtube.com/vi/dQw4w9WgXcQ/maxresdefault.jpg',
-        category: 'hr',
-        duration_minutes: 25
-      },
-      {
-        id: 'hr-2',
-        title: 'Tell Me About Yourself - Perfect Answer',
-        description: 'How to craft the perfect answer to this common question',
-        youtube_url: 'https://youtube.com/watch?v=dQw4w9WgXcQ',
-        thumbnail_url: 'https://img.youtube.com/vi/dQw4w9WgXcQ/maxresdefault.jpg',
+        title: 'Tell Me About Yourself - Perfect Answer Template',
+        description: 'How to craft the perfect answer to "Tell me about yourself" question. Professional self-introduction techniques and best practices.',
+        youtube_url: 'https://youtube.com/watch?v=1eiAqhYf6Ao',
+        thumbnail_url: 'https://img.youtube.com/vi/1eiAqhYf6Ao/maxresdefault.jpg',
         category: 'hr',
         duration_minutes: 15
       },
       {
+        id: 'hr-2',
+        title: 'HR Interview Questions & Best Answers',
+        description: 'Most common HR interview questions and how to answer them professionally. Learn the best responses to behavioral questions.',
+        youtube_url: 'https://youtube.com/watch?v=GocdYwKJjqg',
+        thumbnail_url: 'https://img.youtube.com/vi/GocdYwKJjqg/maxresdefault.jpg',
+        category: 'hr',
+        duration_minutes: 25
+      },
+      {
         id: 'hr-3',
-        title: 'Behavioral Interview Strategies',
-        description: 'STAR method and behavioral interview techniques',
-        youtube_url: 'https://youtube.com/watch?v=dQw4w9WgXcQ',
-        thumbnail_url: 'https://img.youtube.com/vi/dQw4w9WgXcQ/maxresdefault.jpg',
+        title: 'Behavioral Interview Strategies - STAR Method',
+        description: 'STAR method and behavioral interview techniques. How to structure your answers for maximum impact and showcase your skills.',
+        youtube_url: 'https://youtube.com/watch?v=75vq7XwDwE4',
+        thumbnail_url: 'https://img.youtube.com/vi/75vq7XwDwE4/maxresdefault.jpg',
         category: 'hr',
         duration_minutes: 35
+      },
+      {
+        id: 'hr-4',
+        title: 'How to Answer "Why Should We Hire You?"',
+        description: 'Professional strategies for answering "Why should we hire you?" question. Stand out from other candidates with compelling answers.',
+        youtube_url: 'https://youtube.com/watch?v=wzrGsn_JwdA',
+        thumbnail_url: 'https://img.youtube.com/vi/wzrGsn_JwdA/maxresdefault.jpg',
+        category: 'hr',
+        duration_minutes: 18
+      },
+      {
+        id: 'hr-5',
+        title: 'Salary Negotiation Tips for Job Interviews',
+        description: 'How to negotiate salary during job interviews. Professional salary negotiation strategies and techniques to get the best offer.',
+        youtube_url: 'https://youtube.com/watch?v=H6n3iNh4XLI',
+        thumbnail_url: 'https://img.youtube.com/vi/H6n3iNh4XLI/maxresdefault.jpg',
+        category: 'hr',
+        duration_minutes: 20
+      },
+      {
+        id: 'hr-6',
+        title: 'How to Answer "What Are Your Weaknesses?"',
+        description: 'Professional strategies for answering the weakness question. Turn your weaknesses into strengths and show self-awareness.',
+        youtube_url: 'https://youtube.com/watch?v=1eiAqhYf6Ao',
+        thumbnail_url: 'https://img.youtube.com/vi/1eiAqhYf6Ao/maxresdefault.jpg',
+        category: 'hr',
+        duration_minutes: 12
+      },
+      {
+        id: 'hr-7',
+        title: 'Leadership & Teamwork Interview Questions',
+        description: 'Common leadership and teamwork interview questions. Learn how to showcase your leadership skills and team collaboration experience.',
+        youtube_url: 'https://youtube.com/watch?v=GocdYwKJjqg',
+        thumbnail_url: 'https://img.youtube.com/vi/GocdYwKJjqg/maxresdefault.jpg',
+        category: 'hr',
+        duration_minutes: 22
+      },
+      {
+        id: 'hr-8',
+        title: 'How to Handle Stress & Pressure Questions',
+        description: 'Professional strategies for answering stress and pressure-related questions. Show your ability to handle challenging situations.',
+        youtube_url: 'https://youtube.com/watch?v=75vq7XwDwE4',
+        thumbnail_url: 'https://img.youtube.com/vi/75vq7XwDwE4/maxresdefault.jpg',
+        category: 'hr',
+        duration_minutes: 16
       }
     ]
   };
@@ -150,28 +240,36 @@ const Videos = () => {
 
     setSearching(true);
     try {
-      // This would integrate with Gemini API to search for videos
-      // For now, we'll show a placeholder
-      const mockResults = [
-        {
-          id: 'search-1',
-          title: `Best ${searchQuery} Interview Tips`,
-          description: `Comprehensive guide for ${searchQuery} interview preparation`,
-          thumbnail: 'https://img.youtube.com/vi/dQw4w9WgXcQ/maxresdefault.jpg',
-          duration: '15:30',
-          url: 'https://youtube.com/watch?v=dQw4w9WgXcQ'
-        },
-        {
-          id: 'search-2',
-          title: `Common ${searchQuery} Interview Questions`,
-          description: `Top questions asked in ${searchQuery} interviews`,
-          thumbnail: 'https://img.youtube.com/vi/dQw4w9WgXcQ/maxresdefault.jpg',
-          duration: '22:45',
-          url: 'https://youtube.com/watch?v=dQw4w9WgXcQ'
-        }
+      // Search through all available videos (both from database and static)
+      const allVideos = [
+        ...videos,
+        ...staticVideos.technical,
+        ...staticVideos.hr
       ];
+
+      const query = searchQuery.toLowerCase();
       
-      setSearchResults(mockResults);
+      // Filter videos based on search query
+      const searchResults = allVideos.filter(video => {
+        const titleMatch = video.title.toLowerCase().includes(query);
+        const descriptionMatch = video.description.toLowerCase().includes(query);
+        const categoryMatch = video.category.toLowerCase().includes(query);
+        
+        return titleMatch || descriptionMatch || categoryMatch;
+      });
+
+      // Convert to search result format
+      const formattedResults = searchResults.map(video => ({
+        id: video.id,
+        title: video.title,
+        description: video.description,
+        thumbnail: video.thumbnail_url,
+        duration: formatDuration(video.duration_minutes),
+        url: video.youtube_url,
+        category: video.category
+      }));
+      
+      setSearchResults(formattedResults);
     } catch (error) {
       console.error('Error searching videos:', error);
     } finally {
@@ -238,13 +336,13 @@ const Videos = () => {
           <CardHeader>
             <CardTitle className="flex items-center gap-2">
               <Search className="h-5 w-5" />
-              AI-Powered Video Search
+              Video Search
             </CardTitle>
           </CardHeader>
           <CardContent>
             <div className="flex gap-2">
               <Input
-                placeholder="Search for interview videos (e.g., 'HR interview intro', 'technical coding tips')"
+                placeholder="Search for videos (e.g., 'JavaScript', 'HR questions', 'system design', 'behavioral')"
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
                 onKeyPress={(e) => e.key === 'Enter' && handleSearch()}
@@ -256,7 +354,7 @@ const Videos = () => {
             
             {searchResults.length > 0 && (
               <div className="mt-6">
-                <h3 className="font-semibold mb-4">Search Results (Powered by AI)</h3>
+                <h3 className="font-semibold mb-4">Search Results ({searchResults.length} videos found)</h3>
                 <div className="grid md:grid-cols-2 gap-4">
                   {searchResults.map((result) => (
                     <Card key={result.id} className="hover:shadow-md transition-shadow">
@@ -268,19 +366,23 @@ const Videos = () => {
                             className="w-24 h-16 object-cover rounded"
                           />
                           <div className="flex-1">
+                            <div className="flex items-center gap-2 mb-1">
+                              <span className="inline-flex items-center rounded-full bg-secondary px-2.5 py-0.5 text-xs font-semibold text-secondary-foreground capitalize">
+                                {result.category}
+                              </span>
+                              <div className="flex items-center gap-1 text-xs text-muted-foreground">
+                                <Clock className="w-3 h-3" />
+                                {result.duration}
+                              </div>
+                            </div>
                             <h4 className="font-medium text-sm leading-tight mb-1">{result.title}</h4>
                             <p className="text-xs text-muted-foreground mb-2 line-clamp-2">{result.description}</p>
-                            <div className="flex items-center justify-between">
-                              <Badge variant="outline" className="text-xs">
-                                <Clock className="w-3 h-3 mr-1" />
-                                {result.duration}
-                              </Badge>
-                              <Button size="sm" variant="ghost" asChild>
-                                <a href={result.url} target="_blank" rel="noopener noreferrer">
-                                  <ExternalLink className="w-3 h-3" />
-                                </a>
-                              </Button>
-                            </div>
+                            <Button size="sm" variant="outline" asChild className="w-full">
+                              <a href={result.url} target="_blank" rel="noopener noreferrer">
+                                <ExternalLink className="w-3 h-3 mr-1" />
+                                Watch Video
+                              </a>
+                            </Button>
                           </div>
                         </div>
                       </CardContent>
